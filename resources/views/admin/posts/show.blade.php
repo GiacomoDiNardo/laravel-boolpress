@@ -18,6 +18,11 @@
                     <dt>Contenuto</dt>
                     <dd>{{ $post->content }}</dd>
 
+                    <dt>Tags</dt>
+                    <dd>
+                        {{ $post->tags->implode('name', ' - ') }}
+                    </dd>
+
                 </dl>
                 <a href="{{ route('admin.posts.edit', ['post' => $post->slug]) }}"
                    class="btn btn-warning">

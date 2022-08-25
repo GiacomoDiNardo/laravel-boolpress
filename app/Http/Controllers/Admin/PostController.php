@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -77,7 +78,8 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             "title" => "required|min:10",
-            "content"=> "required|min:10"
+            "content"=> "required|min:10",
+            // "tags" => "nullable|exists:tags,id"
         ]);
 
         $post = new Post();
@@ -87,6 +89,12 @@ class PostController extends Controller
         $post->slug = $this->generateSlug($post->title);
 
         $post->save();
+
+        if (key_exists("tags", $validated)){
+
+            $post->tags()->attach($validated["tags"]);
+        }
+
         return redirect()->route("admin.posts.show", $post->slug);
     }
 
@@ -112,9 +120,9 @@ class PostController extends Controller
     public function edit($slug)
     {
         $post = $this->findBySlug($slug);
-        
+        $tags = Tag::all();
 
-        return view("admin.posts.edit", compact("post"));
+        return view("admin.posts.edit", compact("post", "tags"));
     }
 
     /**
@@ -128,7 +136,9 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             "title" => "required|min:10",
-            "content"=> "required|min:10"
+            "content"=> "required|min:10",
+            "tags" => "nullable|exists:tags,id"
+
         ]);
 
         $post = $this->findBySlug($slug);
@@ -136,6 +146,15 @@ class PostController extends Controller
         if ($validated["title"] !== $post->title) {
             // genero un nuovo slug
             $post->slug = $this->generateSlug($validated["title"]);
+        }
+
+        // $post->tags()->detach();
+
+        if (key_exists("tags", $validated)){
+
+            $post->tags()->sync($validated["tags"]);
+        }else {
+            $post->tags()->sync([]);
         }
 
         $post->update($validated);
