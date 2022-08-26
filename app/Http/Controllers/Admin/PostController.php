@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PostMail;
 use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -80,7 +82,7 @@ class PostController extends Controller
         $validated = $request->validate([
             "title" => "required|min:10",
             "content"=> "required|min:10",
-            // "tags" => "nullable|exists:tags,id"
+            "tags" => "nullable|exists:tags,id"
         ]);
 
         $post = new Post();
@@ -95,6 +97,8 @@ class PostController extends Controller
 
             $post->tags()->attach($validated["tags"]);
         }
+
+        Mail::to($post->user->email)->send(new PostMail($post));
 
         return redirect()->route("admin.posts.show", $post->slug);
     }
