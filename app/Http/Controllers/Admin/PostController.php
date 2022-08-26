@@ -7,6 +7,7 @@ use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -137,11 +138,23 @@ class PostController extends Controller
         $validated = $request->validate([
             "title" => "required|min:10",
             "content"=> "required|min:10",
-            "tags" => "nullable|exists:tags,id"
+            "tags" => "nullable|exists:tags,id",
+            "cover_img" => "nullable|image"
 
         ]);
 
         $post = $this->findBySlug($slug);
+
+        if (key_exists("cover_img", $validated)) {
+
+            if($post->post_img) {
+                Storage::delete($post->post_img);
+            }
+            
+            $postImg = Storage::put("/post_img", $validated["cover_img"]);
+
+            $post->post_img = $postImg;
+        }
 
         if ($validated["title"] !== $post->title) {
             // genero un nuovo slug
