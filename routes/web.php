@@ -33,3 +33,6 @@ Route::middleware("auth")
     Route::get("/users/{user}/edit", "UserController@edit")->name("users.edit");
 });
 
+Route::get("{any?}", function(){
+    return view("welcome");
+})->where("any", ".*");

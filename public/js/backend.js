@@ -49659,9 +49659,9 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Giacomo\Documents\Boolean-Repo\laravel-api-1\resources\js\backend.js */"./resources/js/backend.js");
-__webpack_require__(/*! C:\Users\Giacomo\Documents\Boolean-Repo\laravel-api-1\resources\sass\app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! C:\Users\Giacomo\Documents\Boolean-Repo\laravel-api-1\resources\sass\frontend\frontend.scss */"./resources/sass/frontend/frontend.scss");
+__webpack_require__(/*! C:\Users\Giacomo\Documents\Boolean-Repo\laravel-boolpress\resources\js\backend.js */"./resources/js/backend.js");
+__webpack_require__(/*! C:\Users\Giacomo\Documents\Boolean-Repo\laravel-boolpress\resources\sass\app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! C:\Users\Giacomo\Documents\Boolean-Repo\laravel-boolpress\resources\sass\frontend\frontend.scss */"./resources/sass/frontend/frontend.scss");
 
 
 /***/ })
